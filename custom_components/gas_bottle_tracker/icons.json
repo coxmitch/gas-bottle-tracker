@@ -15,5 +15,53 @@
     "check_notifications": {
       "service": "mdi:bell-outline"
     }
+  },
+  "entity": {
+    "sensor": {
+      "current_bottle_age": {
+        "default": "mdi:gas-cylinder"
+      },
+      "average_bottle_lifespan": {
+        "default": "mdi:calendar-clock"
+      },
+      "bottle_history_count": {
+        "default": "mdi:history"
+      },
+      "spare_bottles": {
+        "default": "mdi:gas-cylinder"
+      },
+      "estimated_days_remaining": {
+        "default": "mdi:calendar-alert"
+      },
+      "remaining_percentage": {
+        "default": "mdi:gas-cylinder-outline",
+        "range": {
+          "0": "mdi:gas-cylinder-off",
+          "10": "mdi:gas-cylinder-outline",
+          "25": "mdi:gas-cylinder-outline",
+          "50": "mdi:gas-cylinder",
+          "75": "mdi:gas-cylinder",
+          "90": "mdi:gas-cylinder"
+        }
+      },
+      "estimated_next_change": {
+        "default": "mdi:calendar-arrow-right"
+      },
+      "average_daily_usage": {
+        "default": "mdi:chart-line"
+      },
+      "bottle_size": {
+        "default": "mdi:weight-kilogram"
+      },
+      "shortest_bottle_lifespan": {
+        "default": "mdi:timer-alert-outline"
+      },
+      "longest_bottle_lifespan": {
+        "default": "mdi:timer-plus-outline"
+      },
+      "median_bottle_lifespan": {
+        "default": "mdi:chart-bell-curve"
+      }
+    }
   }
 }

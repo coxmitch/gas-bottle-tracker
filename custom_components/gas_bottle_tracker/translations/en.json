@@ -59,7 +59,7 @@
           "warning_days": "Send the first warning when this many estimated days remain.",
           "critical_days": "Send a critical warning when this many estimated days remain.",
           "notify_overdue": "Send a notification when the estimated bottle life has been reached.",
-          "notify_spares_empty": "Send a notification when no full spare gas bottles remain."
+          "notify_spares_empty": "Send a notification when no full spare bottles remain."
         }
       }
     }

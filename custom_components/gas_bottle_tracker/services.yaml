@@ -9,6 +9,7 @@ new_bottle:
       example: "2026-09-24"
       selector:
         text:
+
     used_spare:
       name: Used Spare
       description: Select whether the new bottle was taken from your recorded spare bottles.
@@ -36,6 +37,7 @@ test_notification:
       example: "Gas Bottle Tracker Test"
       selector:
         text:
+
     message:
       name: Message
       description: The message to send.

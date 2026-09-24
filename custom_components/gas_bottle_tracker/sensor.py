@@ -203,7 +203,6 @@ async def async_setup_entry(
             "bottle_size",
             "Bottle Size",
             "kg",
-            "mdi:gas-cylinder",
         ),
         GasBottleSensor(
             hass,
@@ -213,7 +212,6 @@ async def async_setup_entry(
             "current_bottle_age",
             "Current Bottle Age",
             "days",
-            "mdi:gas-cylinder",
         ),
         GasBottleSensor(
             hass,
@@ -223,7 +221,6 @@ async def async_setup_entry(
             "average_bottle_lifespan",
             "Average Bottle Lifespan",
             "days",
-            "mdi:chart-timeline-variant",
         ),
         GasBottleSensor(
             hass,
@@ -233,7 +230,6 @@ async def async_setup_entry(
             "average_daily_usage",
             "Average Daily Usage",
             "kg/day",
-            "mdi:scale",
         ),
         GasBottleSensor(
             hass,
@@ -243,7 +239,6 @@ async def async_setup_entry(
             "estimated_days_remaining",
             "Estimated Days Remaining",
             "days",
-            "mdi:timer-sand",
         ),
         GasBottleSensor(
             hass,
@@ -253,7 +248,6 @@ async def async_setup_entry(
             "remaining_percentage",
             "Remaining Percentage",
             "%",
-            "mdi:percent",
         ),
         GasBottleSensor(
             hass,
@@ -263,7 +257,6 @@ async def async_setup_entry(
             "estimated_next_change",
             "Estimated Next Change",
             None,
-            "mdi:calendar-clock",
             device_class="date",
         ),
         GasBottleSensor(
@@ -274,7 +267,6 @@ async def async_setup_entry(
             "shortest_bottle_lifespan",
             "Shortest Bottle Lifespan",
             "days",
-            "mdi:arrow-collapse-down",
         ),
         GasBottleSensor(
             hass,
@@ -284,7 +276,6 @@ async def async_setup_entry(
             "longest_bottle_lifespan",
             "Longest Bottle Lifespan",
             "days",
-            "mdi:arrow-collapse-up",
         ),
         GasBottleSensor(
             hass,
@@ -294,7 +285,6 @@ async def async_setup_entry(
             "median_bottle_lifespan",
             "Median Bottle Lifespan",
             "days",
-            "mdi:chart-bell-curve",
         ),
         GasBottleSensor(
             hass,
@@ -304,7 +294,6 @@ async def async_setup_entry(
             "history_count",
             "Bottle History Count",
             "changes",
-            "mdi:history",
             entity_category=EntityCategory.DIAGNOSTIC,
         ),
         GasBottleSensor(
@@ -315,7 +304,6 @@ async def async_setup_entry(
             "spare_bottles",
             "Spare Bottles",
             "bottles",
-            "mdi:gas-cylinder",
         ),
     ]
 
@@ -337,7 +325,6 @@ class GasBottleSensor(SensorEntity):
         sensor_key: str,
         name: str,
         unit: str | None,
-        icon: str,
         device_class: str | None = None,
         entity_category: EntityCategory | None = None,
     ) -> None:
@@ -355,7 +342,9 @@ class GasBottleSensor(SensorEntity):
             f"{entry_id}_{sensor_key}"
         )
 
-        self._attr_icon = icon
+        # Use the sensor key as the translation key.
+        # Icons are defined in icons.json.
+        self._attr_translation_key = sensor_key
 
         if unit:
             self._attr_native_unit_of_measurement = unit

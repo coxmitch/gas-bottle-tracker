@@ -12,9 +12,14 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
 from .const import DOMAIN, SIGNAL_UPDATE
-from .notifications import _send_notification, async_check_notifications
+from .notifications import (
+    _send_notification,
+    async_check_notifications,
+)
+
 
 _LOGGER = logging.getLogger(__name__)
+
 
 SERVICE_NEW_BOTTLE = "new_bottle"
 SERVICE_ADD_SPARE = "add_spare"
@@ -25,73 +30,126 @@ SERVICE_CHECK_NOTIFICATIONS = "check_notifications"
 
 def _get_entry(hass: HomeAssistant):
     """Get the configured Gas Bottle Tracker entry."""
+
     entries = hass.data.get(DOMAIN, {})
 
     if not entries:
         return None, None
 
-    entry_id, entry_data = next(iter(entries.items()))
+    entry_id, entry_data = next(
+        iter(entries.items())
+    )
+
     return entry_id, entry_data
 
 
-async def async_setup_services(hass: HomeAssistant) -> None:
+async def async_setup_services(
+    hass: HomeAssistant,
+) -> None:
     """Register Gas Bottle Tracker services."""
 
-    async def handle_new_bottle(call: ServiceCall) -> None:
+    async def handle_new_bottle(
+        call: ServiceCall,
+    ) -> None:
         """Handle installation of a new gas bottle."""
+
         entry_id, entry_data = _get_entry(hass)
 
         if entry_data is None:
             return
 
         storage = entry_data["storage"]
-        change_date = call.data.get("change_date")
 
-        new_date = (
-            date.fromisoformat(change_date)
-            if change_date
-            else date.today()
+        change_date = call.data.get(
+            "change_date"
         )
 
-        used_spare = call.data.get("used_spare", False)
+        if change_date:
+            new_date = date.fromisoformat(
+                change_date
+            )
+        else:
+            new_date = date.today()
 
-        await storage.async_new_bottle(new_date, used_spare)
+        used_spare = call.data.get(
+            "used_spare",
+            False,
+        )
 
-        async_dispatcher_send(hass, SIGNAL_UPDATE, entry_id)
+        await storage.async_new_bottle(
+            new_date,
+            used_spare,
+        )
 
-    async def handle_add_spare(call: ServiceCall) -> None:
+        async_dispatcher_send(
+            hass,
+            SIGNAL_UPDATE,
+            entry_id,
+        )
+
+    async def handle_add_spare(
+        call: ServiceCall,
+    ) -> None:
         """Add one spare bottle."""
+
         entry_id, entry_data = _get_entry(hass)
 
         if entry_data is None:
             return
 
-        await entry_data["storage"].async_add_spare()
-        async_dispatcher_send(hass, SIGNAL_UPDATE, entry_id)
+        storage = entry_data["storage"]
 
-    async def handle_remove_spare(call: ServiceCall) -> None:
+        await storage.async_add_spare()
+
+        async_dispatcher_send(
+            hass,
+            SIGNAL_UPDATE,
+            entry_id,
+        )
+
+    async def handle_remove_spare(
+        call: ServiceCall,
+    ) -> None:
         """Remove one spare bottle."""
+
         entry_id, entry_data = _get_entry(hass)
 
         if entry_data is None:
             return
 
-        await entry_data["storage"].async_remove_spare()
-        async_dispatcher_send(hass, SIGNAL_UPDATE, entry_id)
+        storage = entry_data["storage"]
 
-    async def handle_test_notification(call: ServiceCall) -> None:
+        await storage.async_remove_spare()
+
+        async_dispatcher_send(
+            hass,
+            SIGNAL_UPDATE,
+            entry_id,
+        )
+
+    async def handle_test_notification(
+        call: ServiceCall,
+    ) -> None:
         """Send a branded test notification."""
+
         entry_id, entry_data = _get_entry(hass)
 
         if entry_data is None:
             return
 
         entry = entry_data["entry"]
+
         options = entry.options
 
-        if not options.get("notification_enabled", True):
+        enabled = options.get(
+            "notification_enabled",
+            True,
+        )
+
+        if not enabled:
             _LOGGER.warning(
-                "Gas Bottle Tracker notifications are disabled."
+                "Gas Bottle Tracker notifications "
+                "are disabled."
             )
             return
 
@@ -102,7 +160,8 @@ async def async_setup_services(hass: HomeAssistant) -> None:
 
         if not notification_services:
             _LOGGER.warning(
-                "Gas Bottle Tracker has no notification devices selected."
+                "Gas Bottle Tracker has no "
+                "notification devices selected."
             )
             return
 
@@ -110,9 +169,11 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             "title",
             "Gas Bottle Tracker Test",
         )
+
         message = call.data.get(
             "message",
-            "Gas Bottle Tracker notifications are working correctly.",
+            "Gas Bottle Tracker notifications "
+            "are working correctly.",
         )
 
         await _send_notification(
@@ -125,9 +186,14 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             background_color="#1976D2",
         )
 
-    async def handle_check_notifications(call: ServiceCall) -> None:
+    async def handle_check_notifications(
+        call: ServiceCall,
+    ) -> None:
         """Manually run the notification check."""
-        entry_id, entry_data = _get_entry(hass)
+
+        entry_id, entry_data = _get_entry(
+            hass
+        )
 
         if entry_data is None:
             return
@@ -144,8 +210,13 @@ async def async_setup_services(hass: HomeAssistant) -> None:
         handle_new_bottle,
         schema=vol.Schema(
             {
-                vol.Optional("change_date"): cv.string,
-                vol.Optional("used_spare", default=False): cv.boolean,
+                vol.Optional(
+                    "change_date"
+                ): cv.string,
+                vol.Optional(
+                    "used_spare",
+                    default=False,
+                ): cv.boolean,
             }
         ),
     )
@@ -177,8 +248,8 @@ async def async_setup_services(hass: HomeAssistant) -> None:
                 vol.Optional(
                     "message",
                     default=(
-                        "Gas Bottle Tracker notifications are "
-                        "working correctly."
+                        "Gas Bottle Tracker notifications "
+                        "are working correctly."
                     ),
                 ): cv.string,
             }

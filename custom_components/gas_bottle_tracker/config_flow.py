@@ -28,7 +28,11 @@ from .const import (
 
 def _get_mobile_notification_services(hass):
     """Return available Home Assistant mobile notification services."""
-    services = hass.services.async_services_for_domain("notify")
+
+    services = hass.services.async_services_for_domain(
+        "notify"
+    )
+
     mobile_services = []
 
     for service_name in services:
@@ -37,8 +41,12 @@ def _get_mobile_notification_services(hass):
                 {
                     "value": service_name,
                     "label": service_name.replace(
-                        "mobile_app_", ""
-                    ).replace("_", " ").title(),
+                        "mobile_app_",
+                        "",
+                    ).replace(
+                        "_",
+                        " ",
+                    ).title(),
                 }
             )
 
@@ -56,11 +64,18 @@ class GasBottleTrackerConfigFlow(
 
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(
+        self,
+        user_input=None,
+    ):
         """Handle the initial setup step."""
+
         if user_input is not None:
             self.user_input = user_input
-            self.user_input["previous_bottle_changes"] = []
+
+            self.user_input[
+                "previous_bottle_changes"
+            ] = []
 
             if user_input["has_spares"]:
                 return await self.async_step_spares()
@@ -69,7 +84,11 @@ class GasBottleTrackerConfigFlow(
 
         schema = vol.Schema(
             {
-                vol.Required("name", default="Gas Bottle"): str,
+                vol.Required(
+                    "name",
+                    default="Gas Bottle",
+                ): str,
+
                 vol.Required(
                     "bottle_size",
                     default=9,
@@ -82,10 +101,12 @@ class GasBottleTrackerConfigFlow(
                         unit_of_measurement="kg",
                     )
                 ),
+
                 vol.Required(
                     "current_bottle_change",
                     default=date.today(),
                 ): selector.DateSelector(),
+
                 vol.Required(
                     "has_spares",
                     default=False,
@@ -98,10 +119,17 @@ class GasBottleTrackerConfigFlow(
             data_schema=schema,
         )
 
-    async def async_step_spares(self, user_input=None):
+    async def async_step_spares(
+        self,
+        user_input=None,
+    ):
         """Handle spare bottle setup."""
+
         if user_input is not None:
-            self.user_input["spare_bottles"] = user_input["spare_bottles"]
+            self.user_input[
+                "spare_bottles"
+            ] = user_input["spare_bottles"]
+
             return await self.async_step_history()
 
         schema = vol.Schema(
@@ -125,12 +153,21 @@ class GasBottleTrackerConfigFlow(
             data_schema=schema,
         )
 
-    async def async_step_history(self, user_input=None):
+    async def async_step_history(
+        self,
+        user_input=None,
+    ):
         """Handle previous bottle change date."""
+
         if user_input is not None:
-            self.user_input["previous_bottle_changes"].append(
-                user_input["previous_bottle_change"]
+            self.user_input[
+                "previous_bottle_changes"
+            ].append(
+                user_input[
+                    "previous_bottle_change"
+                ]
             )
+
             return await self.async_step_history_more()
 
         schema = vol.Schema(
@@ -147,8 +184,12 @@ class GasBottleTrackerConfigFlow(
             data_schema=schema,
         )
 
-    async def async_step_history_more(self, user_input=None):
+    async def async_step_history_more(
+        self,
+        user_input=None,
+    ):
         """Ask whether another previous bottle change should be added."""
+
         if user_input is not None:
             if user_input["continue_history"]:
                 return await self.async_step_history()
@@ -174,8 +215,11 @@ class GasBottleTrackerConfigFlow(
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry: config_entries.ConfigEntry):
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ):
         """Return the options flow."""
+
         return GasBottleTrackerOptionsFlow()
 
 
@@ -184,8 +228,12 @@ class GasBottleTrackerOptionsFlow(
 ):
     """Handle Gas Bottle Tracker options."""
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(
+        self,
+        user_input=None,
+    ):
         """Manage notification settings."""
+
         if user_input is not None:
             return self.async_create_entry(
                 title="",
@@ -194,8 +242,10 @@ class GasBottleTrackerOptionsFlow(
 
         current_options = self.config_entry.options
 
-        notification_services = _get_mobile_notification_services(
-            self.hass
+        notification_services = (
+            _get_mobile_notification_services(
+                self.hass
+            )
         )
 
         current_services = current_options.get(
@@ -223,6 +273,7 @@ class GasBottleTrackerOptionsFlow(
                         DEFAULT_NOTIFICATION_ENABLED,
                     ),
                 ): selector.BooleanSelector(),
+
                 vol.Optional(
                     CONF_NOTIFICATION_SERVICES,
                     default=selected_services,
@@ -233,6 +284,7 @@ class GasBottleTrackerOptionsFlow(
                         mode=selector.SelectSelectorMode.LIST,
                     )
                 ),
+
                 vol.Required(
                     CONF_WARNING_DAYS,
                     default=current_options.get(
@@ -248,6 +300,7 @@ class GasBottleTrackerOptionsFlow(
                         unit_of_measurement="days",
                     )
                 ),
+
                 vol.Required(
                     CONF_CRITICAL_DAYS,
                     default=current_options.get(
@@ -263,6 +316,7 @@ class GasBottleTrackerOptionsFlow(
                         unit_of_measurement="days",
                     )
                 ),
+
                 vol.Required(
                     CONF_NOTIFY_OVERDUE,
                     default=current_options.get(
@@ -270,6 +324,7 @@ class GasBottleTrackerOptionsFlow(
                         DEFAULT_NOTIFY_OVERDUE,
                     ),
                 ): selector.BooleanSelector(),
+
                 vol.Required(
                     CONF_NOTIFY_SPARES_EMPTY,
                     default=current_options.get(
