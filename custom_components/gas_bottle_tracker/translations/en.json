@@ -1,0 +1,67 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Gas Bottle Setup",
+        "description": "Configure your gas bottle tracker.",
+        "data": {
+          "name": "Name",
+          "bottle_size": "Bottle size",
+          "current_bottle_change": "Current Bottle Change Date",
+          "has_spares": "Do you have Spare Full Bottles?"
+        },
+        "data_description": {
+          "name": "A name for this gas bottle tracker.",
+          "bottle_size": "Enter the size of your gas bottle in kilograms.",
+          "current_bottle_change": "Enter the date your current gas bottle was installed.",
+          "has_spares": "Select Yes if you have one or more full spare bottles available."
+        }
+      },
+      "spares": {
+        "title": "Spare Bottles",
+        "description": "How many full spare gas bottles do you currently have?",
+        "data": {
+          "spare_bottles": "Number of Spare Full Bottles"
+        }
+      },
+      "history": {
+        "title": "Previous Bottle Change",
+        "description": "Enter the date when your previous gas bottle was changed.",
+        "data": {
+          "previous_bottle_change": "Previous Bottle Change Date"
+        }
+      },
+      "history_more": {
+        "title": "Previous Bottle History",
+        "description": "Would you like to enter another previous bottle change date?",
+        "data": {
+          "continue_history": "Do you have another previous bottle change to enter?"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Notification Settings",
+        "description": "Configure Gas Bottle Tracker push notifications.",
+        "data": {
+          "notification_enabled": "Enable Notifications",
+          "notification_services": "Mobile Devices",
+          "warning_days": "Warning Days",
+          "critical_days": "Critical Days",
+          "notify_overdue": "Notify When Overdue",
+          "notify_spares_empty": "Notify When No Spare Bottles Remain"
+        },
+        "data_description": {
+          "notification_enabled": "Enable push notifications for this gas bottle tracker.",
+          "notification_services": "Select one or more Home Assistant mobile devices to receive notifications.",
+          "warning_days": "Send the first warning when this many estimated days remain.",
+          "critical_days": "Send a critical warning when this many estimated days remain.",
+          "notify_overdue": "Send a notification when the estimated bottle life has been reached.",
+          "notify_spares_empty": "Send a notification when no full spare gas bottles remain."
+        }
+      }
+    }
+  }
+}
