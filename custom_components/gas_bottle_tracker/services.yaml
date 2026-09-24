@@ -1,0 +1,49 @@
+new_bottle:
+  name: New Bottle
+  description: Record the installation of a new gas bottle.
+  fields:
+    change_date:
+      name: Change Date
+      description: The date the new gas bottle was installed. Leave blank to use today's date.
+      required: false
+      example: "2026-09-24"
+      selector:
+        text:
+    used_spare:
+      name: Used Spare
+      description: Select whether the new bottle was taken from your recorded spare bottles.
+      required: false
+      default: false
+      selector:
+        boolean:
+
+add_spare:
+  name: Add Spare Bottle
+  description: Add one full spare gas bottle to the recorded spare count.
+
+remove_spare:
+  name: Remove Spare Bottle
+  description: Remove one gas bottle from the recorded spare count.
+
+test_notification:
+  name: Test Notification
+  description: Send a test push notification to all selected Gas Bottle Tracker mobile devices.
+  fields:
+    title:
+      name: Title
+      description: The title of the test notification.
+      required: false
+      example: "Gas Bottle Tracker Test"
+      selector:
+        text:
+    message:
+      name: Message
+      description: The message to send.
+      required: false
+      example: "Gas Bottle Tracker notifications are working correctly."
+      selector:
+        text:
+
+check_notifications:
+  name: Check Notifications
+  description: Immediately check the gas bottle tracker notification thresholds.
