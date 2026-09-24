@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="custom_components/gas_bottle_tracker/brand/logo.png" alt="Gas Bottle Tracker">
+</p>
+
 # Gas Bottle Tracker
 
 A Home Assistant custom integration for tracking LPG gas bottle usage, estimating remaining bottle life, storing bottle change history, tracking spare bottles, and sending push notifications.
