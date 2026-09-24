@@ -28,6 +28,8 @@ A Home Assistant custom integration for **estimating** LPG gas bottle usage and 
 
 The **Gas Bottle Tracker Card** is the companion Lovelace card for this integration.
 
+![Gas Bottle Tracker Card](GBT_Card%20Image.png)
+
 It provides a visual dashboard card showing:
 
 - Current bottle status
