@@ -1,0 +1,19 @@
+{
+  "services": {
+    "new_bottle": {
+      "service": "mdi:gas-cylinder"
+    },
+    "add_spare": {
+      "service": "mdi:gas-cylinder"
+    },
+    "remove_spare": {
+      "service": "mdi:gas-cylinder-outline"
+    },
+    "test_notification": {
+      "service": "mdi:bell-check"
+    },
+    "check_notifications": {
+      "service": "mdi:bell-outline"
+    }
+  }
+}
